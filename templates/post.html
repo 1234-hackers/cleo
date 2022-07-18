@@ -6,10 +6,6 @@
 <form method="POST" action="{{ url_for('post') }}"  enctype="multipart/form-data" >
     <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
 
-ThumbNail Or Clickbait
-<br>
-<input type = "file" name="thumb"  onchange="loadFile(event)" >
-
     <br>
     <br>
 

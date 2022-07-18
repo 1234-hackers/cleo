@@ -27,12 +27,10 @@ from wtforms.csrf.session import SessionCSRF
 from datetime import timedelta
 import email_validator 
 import random
-#from flask_mail import Mail,Message
+
 import base64
 from bson.binary import Binary
 from werkzeug.utils import secure_filename
-#mpsa imports
-#from flask_mpesa import MpesaAPI
 
 import PIL
 from PIL import Image
@@ -56,7 +54,7 @@ hcaptcha = hCaptcha(application)
 #images
 upload_folder = 'static/images'
 application.config['UPLOAD_FOLDER'] = upload_folder
-ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg'])
+ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg' , 'gif' , 'tiff' ,'heif' ,'raw' , 'psd'])
 
 
 
@@ -66,18 +64,15 @@ csrf = CSRFProtect(application)
 
 #mongoDB configs
 application.config['MONGO_DBNAME'] = 'users'
-# application.config['MONGO_URI'] = 'mongodb://'+ipst+':27017/users'
-application.config['MONGO_URI'] = 'mongodb://localhost:27017/users'
+application.config['MONGO_URI'] = 'mongodb://localhost:27017/clao'
 
 mongo = PyMongo(application)
 
-client = MongoClient('localhost', 27017)
-db_pic = client.users
-gfs = GridFS(db_pic)
+
 
 application.permanent_session_lifetime = timedelta(days=30)
 
-Hash_passcode = CryptContext(schemes=["sha256_crypt" ,"des_crypt"],sha256_crypt__min_rounds=131072)
+Hash_passcode = CryptContext(schemes=["sha256_crypt", "ldap_salted_md5" ,"des_crypt" ],sha256_crypt__min_rounds=131072)
 
 mongo = PyMongo(application)
 
@@ -94,17 +89,7 @@ def login_required(f):
             time.sleep(2)
             return redirect(url_for('home'))
     return wrap
-
-
-class Base_form(Form):
-    
-    class Meta:
-        csrf = False
-        csrf_class = SessionCSRF
-        csrf_secret = 'EPj00jpfj8Gx1SjndfgdgdgdfgdfgyLxwBBSQfnQ9DJYe0Ym'
-        csrf_time_limit = timedelta(minutes=20)
-        
-           
+          
 @application.route('/',methods = ["POST","GET"])
 def home():
     if request.method == "POST" and hcaptcha.verify():
@@ -194,45 +179,7 @@ def enter_code():
         return redirect(url_for('reset_pass'))
             
     return render_template('enter_code.html')
-     
-class peopleass(Base_form):
-      
-        pass1 = PasswordField("Password" , [validators.Length(min = 8 , max = 15 , message = "Minimum Length Is 8 Characters")]) 
-           
-        pass2 = PasswordField("Confirm Password" , [validators.Length(min = 8,max=15 , message="8 To 15 Characters") , EqualTo("passc",message="Must Be Same To The Input Above") , InputRequired()])
-        
-        
-
-@application.route('/peopleass/' , methods = ['POST','GET'])
-@login_required
-def peopleass(email):
-    form = peopleass()
-    if request.method == "POST" and form.validate():
-        users = mongo.db.users
-        target_account = session['rset'] 
-        pass1 = form.pass1.data
-        pass2 = form.pass2.data
-        if pass1 == pass2 and len(pass2) > 8 and len(pass2) < 15 :
-            passcode = Hash_passcode.hash(pass2)
-            the_user = users.find_one({"email" : email})
-            users.find_one_and_update({"email" :target_account} , { 'set' : {"password" : passcode} })
-            session['login_user'] = target_account
-            return redirect(url_for('main'))
-        else:
-            check_pass = " Please Check The Password And Try Again"
-            return render_template('peopleass.html' , form = form , mess = check_pass)
-            
-    return render_template('peopleass.html' , form = form)
-
-
-class Base_form(FlaskForm):
-    
-    class Meta:
-        csrf = True 
-        csrf_class = SessionCSRF 
-        csrf_secret = b"cffhgfghfgjgherydumbo"
-        csrf_time_limit = timedelta(minutes=25)
-                   
+                
 @application.route('/login/' , methods = ['POST','GET'])
 def login():
  
@@ -334,9 +281,6 @@ def register():
                 return redirect(url_for('complete_regist'))
     return render_template('register.html')
 
-class complete_regist(Base_form):
-    code = StringField("Verification Code" , [validators.InputRequired(message="Please Enter The Code Sent Via Email")])
-
 @application.route('/complete_regist' , methods = ['POST' , 'GET'])
 @login_required
 def complete_regist():
@@ -384,9 +328,7 @@ def choose_tags():
             for y in aaction:
                 em_tags.append(y)
             user_db.find_one_and_update({"email" : user_email} ,{ '$set' :  {"tags": em_tags}} )
-            return redirect(url_for('feed' ))
-            
-            
+            return redirect(url_for('feed' ))      
     return render_template('choose_tags.html' , tags = the_tags)
 
 @application.route('/choose_favs/' , methods = ['POST','GET'])
@@ -670,9 +612,6 @@ def view_prof():
     mez = users.find_one({'email': user_email})
     folloin = mez['favs']
     all_em_posts = link_db.find({'owner' : user})
-        
-    
-    
     cl = session['login_user']
     folloinx = users.find_one({'email' :cl})
     f = folloinx['favs']
@@ -837,11 +776,6 @@ def advert():
 @login_required
 def post(): 
     if request.method == "POST":
-        
-        th = request.files['thumb']
-        
-        filename = th.filename
-            
         link_db = mongo.db.links
         
         title = request.form['title']
@@ -859,24 +793,6 @@ def post():
         tag_arr = []
         
         
-        
-        
-        def allowed_file(filename):
-            return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
-            
-        if allowed_file(filename): 
-            da_nam = post_id.replace("." , "")
-            da_nami = da_nam.replace("/" , "")
-            da_name = da_nami[0:10]
-            th.save("static/images/" + filename)
-            image1 = "static/images/"  + filename
-            image = Image.open(image1)
-            image2 = image.resize((500,500),Image.ANTIALIAS)
-            new = image2.convert("RGB")
-            new.save( "static/images/" + da_name + '.jpg')
-            image = da_name + '.jpg'
-            to_db =  "/static/images/" + image
-        
         tag_arr.append(tag1)
         tag_arr.append(tag2)
         owner = session['login_user']
@@ -886,7 +802,7 @@ def post():
         comments = []
         link_db.insert_one({"owner" : owner , "link" : link ,  "likes" : like_arr , "comments" : comments ,
                             "tags" : tag_arr , "title" : title , "description" : desc , "post_id" : post_id ,
-                            'owner_name' : owner_name , 'ima': to_db})
+                            'owner_name' : owner_name})
         return redirect(url_for('feed'))
     return render_template('post.html')
 
@@ -965,6 +881,6 @@ def edit_post():
     
 if __name__ == "__main__":
     application.secret_key = "Fuckoffmen"
-    application.run(debug = True , port = 5006)
+    application.run(debug = True , port = 5000)
 
     
