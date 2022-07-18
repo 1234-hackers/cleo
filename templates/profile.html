@@ -1,0 +1,66 @@
+{% extends "layout.html"%}
+
+{%block body%}
+
+<div align="center">
+    <h2>
+        My Profile
+        <br>
+        <br>
+
+<img src = "{{nn}}">
+
+    </h2>
+
+<div id = "prof"  align = "center">
+</div>
+</div>
+<div align = "left">
+<h2>
+    My Tags
+</h2>
+
+{%for x in tags%}
+<ul>
+    <li>
+    {{x}}
+</li>
+</ul>
+    {% endfor %}
+
+<h2>
+
+    People I Follow
+
+</h2>
+{%for y in favs%}
+
+        {{y}}  
+{% endfor %}
+
+
+
+</div>
+
+<div align="right">
+   <a href="{{ url_for('my_post') }}" >Manage Posts</a>
+    </div>
+
+<div align="center">
+    {% for v in more %}
+    {{v.owner}}
+    <br>
+    {{v.title}}
+    <br>
+    {{v.description}}
+    <br>
+    <br>
+
+{%endfor%}
+<br>
+<br>
+    </div>
+
+
+{{me}}
+{%endblock%}

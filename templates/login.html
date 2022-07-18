@@ -1,0 +1,41 @@
+{% extends "layout.html"%}
+
+{%block body%}
+
+Log in Here
+
+
+<form method="POST" action= "/login/">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+
+        {{hcaptcha}}
+
+        <input name="email" placeholder="Email" type="email">
+
+<br>
+<br>
+
+        <input name="passcode"  placeholder="Password" type="password">
+
+        
+        <br>
+        <br>
+
+
+        <button type="submit" class="btn btn-primary btn-block">Log In</button>
+    
+</form>
+
+<div>
+
+        <button>  <a href="{{ url_for('register') }}"> Sign Up</a> </button>
+        <br>
+        <br>
+
+        Forgot Password?
+        <br>
+        <br>
+         <a href="{{ url_for('reset_pass') }}"> Request New Password</a>.
+    </div>
+
+{%endblock%}

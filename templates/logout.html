@@ -1,0 +1,22 @@
+{% extends "layout.html"%}
+
+{%block body%}
+<br>
+<br>
+<br>
+
+<div align="center">
+
+
+      Are You Sure You Want To Log Out
+    <form name="view" method="POST" action="{{ url_for('logout') }}">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+        <input type="submit" name="sub" value="Yes">
+        <input type="submit" name="sub" value="No">
+    
+        </form
+
+
+</div>
+
+{%endblock%}

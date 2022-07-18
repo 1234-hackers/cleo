@@ -1,0 +1,56 @@
+{% extends "layout.html"%}
+
+{%block body%}
+
+
+<h2>
+Posts Are Here
+<div align="center">
+    <script>
+        if ( window.history.replaceState ) {
+            window.history.replaceState( null, null, window.location.href );
+          }
+    </script>
+
+</h2>
+
+{% for x in arr%}
+
+<img src = "{{x.ima}}">
+
+<h3> Owner </h3>{{ x.owner }}
+<br>
+<br>
+{{ x.description }}
+<br>
+<h2>
+    Link 
+</h2>
+{{ x.link }}
+<br>
+<br>
+{{x.total_likes}}
+<h2>
+  
+    <form name="view" method="POST" action="{{ url_for('feed') }}">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+        <input type="hidden" name="id" value="{{x.post_id}}" valuex="view">  
+        <input type="submit" name="sub" value="View Link">
+        <input type="button" name="sub" value="Like">
+       
+        
+    
+        </form>
+        
+    <br>
+    <br>
+<hr>
+{%endfor%}
+
+ <br>
+ <br>
+
+{{ email }}
+
+</div>
+{%endblock%}

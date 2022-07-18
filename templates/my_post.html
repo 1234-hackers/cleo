@@ -1,0 +1,52 @@
+{% extends "layout.html"%}
+<script>
+    if ( window.history.replaceState ) {
+        window.history.replaceState( null, null, window.location.href );
+      }
+</script>
+
+
+
+{%block body%}
+<br>
+<br>
+
+<div align="center">
+    {{dude}}
+
+    <br>
+    {{noz}}
+    <br>
+   
+    <br>
+<img src = "{{ppic}}">
+</div>
+<br>
+<br>
+{%for x in posts%}
+Title {{x.title}}
+<br>
+<br>
+The Link {{x.link}}
+<br>
+<br>
+Description {{x.description}}
+<br>
+<br>
+<form name="view" method="POST" action="{{ url_for('my_post') }}">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+    <input type="hidden" name="the_id" value="{{x.post_id}}" valuex="view">  
+    <input type="submit" name="sub" value="Edit">
+    <input type="submit" name="sub" value="Delete">
+
+
+    </form>
+<br>
+<br>
+
+
+
+{%endfor%}
+
+
+{%endblock%}

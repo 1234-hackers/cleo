@@ -1,0 +1,58 @@
+{% extends "layout.html"%}
+
+{%block body%}
+
+<div align="center"> 
+    <br>
+    <br>
+<!--
+<image src="{{url_for('static',filename = 'images/default.jpg')}}" >
+-->
+    <img src = "{{pic}}">
+
+<div id = "prof"  align = "center">
+</div>
+</div>
+<div align="center">
+    
+    {{usr.username}}
+    <br>
+    <br>
+    {{usr.email}}
+    <br>
+    <br>
+    <form name="view" method="POST" action="{{ url_for('view_prof') }}">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+        <input type="hidden" name="id" value="{{usr.email}}" valuex="view">  
+        <input type="submit" name="sub" value="{{state}}">
+        </form>
+    
+<br>
+<br>
+
+
+
+    </div>
+
+    <div align="center">
+        {% for x in posts%}
+
+<br>
+{{ x.description }}
+<br>
+<h2>
+    Link 
+</h2>
+{{ x.link }}
+<br>
+<br>
+{{x.total_likes}}
+
+        {%endfor%}
+
+
+    </div>
+
+
+{{me}}
+{%endblock%}

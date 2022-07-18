@@ -1,0 +1,28 @@
+{% extends "layout.html"%}
+
+{%block body%}
+<div align="center">
+    <br>
+    <br>
+
+<h2> People Found
+
+{%for x in p %}
+<br>
+<br>
+{{x.username}}
+<br>
+<br>
+  
+    <form name="view" method="POST" action="{{ url_for('view_resault') }}">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+        <input type="hidden" name="id" value="{{x.email}}" valuex="view">  
+        <input type="submit" name="subz" value="View Profile">
+        </form>
+    </h2>
+</div>
+{%endfor%}
+
+<h2> Suggested </h2>
+
+{%endblock%}

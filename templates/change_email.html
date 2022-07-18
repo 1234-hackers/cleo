@@ -1,0 +1,19 @@
+{% extends "layout.html"%}
+
+{%block body%}
+
+Change Your Email Here Please
+<form method="POST" action= "{{ url_for('change_email') }}"> 
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+    Changing The From This Email : {{inf.email}}
+    
+    <br>
+    <input type="email" name = "new_email"  placeholder = "New Email"  >
+    <br>
+    <br>
+    <input type="password" name = "passcode" placeholder="Current Password" >
+
+    <button type="submit" class="btn btn-primary btn-block">Update Email</button>
+</form>
+
+{%endblock%}

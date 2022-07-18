@@ -1,0 +1,50 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <script>
+        if ( window.history.replaceState ) {
+            window.history.replaceState( null, null, window.location.href );
+          }
+    </script>
+
+    <link href="{{ url_for('static', filename='main.css') }}" rel="stylesheet">
+
+    <div
+     align="center">
+     <a href="{{ url_for('feed') }}"> Back Home</a>.
+
+        <a  href="{{ url_for('post') }}"> New Post</a>
+    
+        <a href="{{ url_for('profile') }}"> My profile</a>
+        
+        <a href="{{ url_for('search') }}"> Search</a>
+
+        <a href="{{ url_for('saved') }}"> Saved</a>
+
+
+        <a href="{{ url_for('logout') }}"> Log Out</a>
+    
+    </div>
+
+</head>
+
+<body>
+
+    {% block body %}
+    
+    {% endblock %}
+
+    
+
+</body>
+
+</html>

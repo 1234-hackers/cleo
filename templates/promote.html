@@ -1,0 +1,67 @@
+{% extends "layout.html"%}
+{%block body%}
+<script>
+    if ( window.history.replaceState ) {
+        window.history.replaceState( null, null, window.location.href );
+      }
+</script>
+
+<br><br>
+<h3> The Post </h3>
+<br>
+{{post.title}}
+<br><br>
+{{post.description}}
+
+<h4> 
+  Tags
+</h4>
+{% for y in  post.tags%}
+{{y}}
+<br>
+{%endfor%}
+<form name="view" method="POST" action="{{ url_for('promote') }}">
+  <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+  <input type="hidden" name="id" value="{{post.post_id}}" valuex="view"> 
+<h3>   Target Region </h3>
+  <br>
+  <input type="checkbox" name="log" value="11" > USA and Canada
+  <input type="checkbox" name="log" value="12" > Europe
+  <input type="checkbox" name="log" value="13" > Africa
+  <input type="checkbox" name="loc" value="14" > Asia
+  <input type="checkbox" name="loc" value="15" > Australia
+  <input type="checkbox" name="loc" value="16" > South America 
+  <input type="checkbox" name="loc" value="17" > Global
+  <br>
+  <br>
+  <h3> Tags To Help Reach Targets </h3>
+  <br>
+  Separate the Tags With a comma
+  <br>
+    <textarea type="text" name="tags" id="inbox" placeholder="New Tags separated by , " maxlength 25 required="" rows=" 5" style="margin: 0px; width: 250px; height: 69px;"></textarea>
+  
+  
+  <br>
+
+
+  <br>
+  <h3> Choose Your Plan </h3>
+  5$ Up to 600 People reach <input type="checkbox" name="tags" value="2" >
+  <br>
+  12$ Up to 1500 People reach<input type="checkbox" name="tags" value="3" >
+  <br>
+  50$ Up to 8000 People reach<input type="checkbox" name="tags" value="4" >
+  <br>
+  <br>
+
+  24 Hours 10$ Reach  Up to 1400 <input type="checkbox" name="tags" value="5" >
+  <br>
+  72 Hour 32$ Reach  Up to 5000s<input type="checkbox" name="tags" value="6" >
+  <br>
+  One Week 70$ Reach Up to 12500 People <input type="checkbox" name="tags" value="7" >
+  <br>
+  <br>
+        <button type="submit" >Done</button>
+</form>
+
+{%endblock%}

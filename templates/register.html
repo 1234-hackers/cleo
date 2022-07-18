@@ -1,0 +1,41 @@
+{% extends "layout.html"%}
+
+{%block body%}
+
+<form method="POST" action="{{ url_for('register') }}" enctype="multipart/form-data" >
+
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+
+Email
+<br>
+
+<input name="email" placeholder="Email" type="email">
+<br>
+<br>
+Username
+<br>
+<input name="username" placeholder="Email" type="text">
+<br>
+<br>
+Password
+<br>
+<input name="passc"  placeholder="Password" type="password">
+<br>
+<br>
+Confirm Password
+<br>
+<input name="passc2"  placeholder="Password" type="password">
+<br>
+<br>
+Profile Picture
+<br>
+<input type = "file" name = "img" required onchange="loadFile(event)">
+<br>
+<br>
+
+
+    <button type="submit" class="btn btn-primary btn-block">Register</button>
+</form>
+
+
+{%endblock%}
