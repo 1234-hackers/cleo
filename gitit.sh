@@ -6,4 +6,4 @@ read commit
 
 git commit -m $commit
 
-git push origin main
+git push origin master
