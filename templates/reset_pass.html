@@ -1,25 +1,53 @@
-<html lang="en-US">
+
+<!DOCTYPE html>
+<html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <title>Forgot Password</title>
-    <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet">
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <script>
+        if ( window.history.replaceState ) {
+            window.history.replaceState( null, null, window.location.href );
+          }
+    </script>
+    <title>Reset Password
+    </title>
+    <div class="site_name">
+        CLEO
+    </div>
+
+    <link href="{{ url_for('static', filename='/css/main.css') }}" rel="stylesheet">
 </head>
 
+
 <body>
-    <div class="box">
-        <div class="innerbox" align = "center">
+    <div class="form_login" align="center">
+        <div class="contents">
+<div class="login_name">                      <br>
+    You are abot to reset Your Account Password
+</div>
             <form method=POST action="{{ url_for('reset_pass') }}">
                 <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
-                <h4>
-                    You are trying to reset Your Account Password
-                </h4>
+<br>
+<br>
+
                 <h3>Enter Your Email</h3>
-                <input type="email" name="email" placeholder="Your Account Email" />
-                <input type="submit" value="Send" />
+                <br>
+<br>
+                <input class="inputs" type="email" name="email" placeholder="Your Account Email" />
+                <br><br>
+            
+                
+                <button value="send" type="submit" class="sub_btn">Send</button>
             </form>
         </div>
     </div>
+</div>
 </body>
 
 </html>

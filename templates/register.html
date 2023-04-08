@@ -1,6 +1,31 @@
-{% extends "layout.html"%}
 
-{%block body%}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <script>
+        if ( window.history.replaceState ) {
+            window.history.replaceState( null, null, window.location.href );
+          }
+    </script>
+    <div class="site_name">
+        CLEO
+    </div>
+
+    <link href="{{ url_for('static', filename='/css/main.css') }}" rel="stylesheet">
+<body>
+        <div class="form_login" align="center">
+                <div class="contents">
+  <div class="login_name">                      <br>
+Create An Account
+  </div>
 
 <form method="POST" action="{{ url_for('register') }}" enctype="multipart/form-data" >
 
@@ -9,33 +34,54 @@
 Email
 <br>
 
-<input name="email" placeholder="Email" type="email">
+<input class="inputs" name="email" placeholder="Email" type="email">
 <br>
 <br>
 Username
 <br>
-<input name="username" placeholder="Username" type="text">
+<input  class="inputs" name="username" placeholder="Username" type="text">
 <br>
 <br>
 Password
 <br>
-<input name="passc"  placeholder="Password" type="password">
+<input class="inputs" name="passc"  placeholder="Password" type="password">
 <br>
 <br>
 Confirm Password
 <br>
-<input name="passc2"  placeholder="Password" type="password">
+<input class="inputs"  name="passc2"  placeholder="Password" type="password">
 <br>
 <br>
-Profile Picture
-<br>
-<input type = "file" name = "img" required onchange="loadFile(event)">
-<br>
-<br>
+<div class="image-upload">
+    <label for="file-input">
+      <img id="previewImg" src="{{ url_for('static', filename="/imgs/ima.jpg") }}" class="profile_banner" />
+    </label>
+
+    <input id="file-input" name = "img" type="file"  required onchange="previewFile(this);" style="display: none;" />
+  </div>
+<script>
+      function previewFile(input){
+          var file = $("input[type=file]").get(0).files[0];
+
+          if(file){
+            var reader = new FileReader();
+
+            reader.onload = function(){
+                $("#previewImg").attr("src", reader.result);
+            }
+
+            reader.readAsDataURL(file);
+          }
+      }
+  </script>
 
 
-    <button type="submit" class="btn btn-primary btn-block">Register</button>
+    <button type="submit" class="sub_btn">Register</button>
 </form>
 
+</div>
+</div>
+</div>
+</body>
 
-{%endblock%}
+</html>

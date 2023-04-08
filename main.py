@@ -77,7 +77,6 @@ Hash_passcode = CryptContext(schemes=["sha256_crypt", "ldap_salted_md5" ,"des_cr
 mongo = PyMongo(application)
 
 users = mongo.db.users
-link_db = mongo.db.links
 verif = mongo.db.verify_email
 
 def login_required(f):
@@ -339,7 +338,7 @@ def choose_favs():
     user = user_db.find_one({"email" : user_email})
     em_favs = user['favs']
     favs_tags = user['tags']
-    all_posts= link_db.find()
+    all_posts= post_db.find()
     f = []
     for k in all_posts:
             ok = k['tags']
@@ -378,11 +377,11 @@ def choose_favs():
 @application.route('/feed/' , methods = ['POST','GET'])
 @login_required
 def feed():
-    link_db = mongo.db.links
-    em = link_db.find()
+    post_db = mongo.db.cleos
+    em = post_db.find()
     user = mongo.db.users
     trending_db = mongo.db.trending
-    randomly = link_db.find().limit(100)
+    randomly = post_db.find().limit(100)
     render_array = []
     render_array.extend(randomly)
     #based on following people
@@ -396,7 +395,7 @@ def feed():
         count = 2
     for x in favs:         
         user = x
-        documentz = link_db.find({"owner" : user }).limit(count)
+        documentz = post_db.find({"owner" : user }).limit(count)
         for kk in documentz:
             if not kk in render_array:
                 fav_arr.extend(documentz)      
@@ -408,7 +407,7 @@ def feed():
         indiv_tags  = y
         #relevant = trending_db.find({"tags" : tags})
         arr1 = []
-        all_posts= link_db.find().limit(300)
+        all_posts= post_db.find().limit(300)
         for x in all_posts:
             tags = x['tags']
             if indiv_tags in tags:
@@ -426,19 +425,19 @@ def feed():
             return redirect(url_for('view_link' ))
                 
         if request.form['sub'] == "Like":
-            the_post = link_db.find_one({"post_id" : the_id})
+            the_post = post_db.find_one({"post_id" : the_id})
             likes= the_post['likes']
             total_likes = len(likes)
             clicker = session['login_user']
             if clicker in likes:
                 likes.remove(clicker)
                 total_likes = len(likes)
-                link_db.find_one_and_update({"post_id" : the_id} ,{ '$set' :  {"likes": likes  , 'total_likes' : total_likes }} )
+                post_db.find_one_and_update({"post_id" : the_id} ,{ '$set' :  {"likes": likes  , 'total_likes' : total_likes }} )
                 b_color = "red"
             else:
                 likes.append(clicker) 
                 total_likes = len(likes)
-                link_db.find_one_and_update({"post_id" : the_id} ,{ '$set' :  {"likes": likes  , 'total_likes' : total_likes}} )
+                post_db.find_one_and_update({"post_id" : the_id} ,{ '$set' :  {"likes": likes  , 'total_likes' : total_likes}} )
                 b_color = "less"   
         
         
@@ -462,7 +461,7 @@ def found_posts():
     to_show = []
     de_search = session['q']
     finds = de_search.split()
-    al = link_db.find()
+    al = post_db.find()
     for x in finds: 
         for c in al:
             emt = c['tags']
@@ -554,8 +553,8 @@ def profile():
     tags = acc['tags']
     user = acc['username']
     minez = []
-    my_posts = link_db.find({"owner" : me})
-    more_posts = link_db.find({}).limit(5)
+    my_posts = post_db.find({"owner" : me})
+    more_posts = post_db.find({}).limit(5)
     
     
     if os.path.exists("static/images/" + me2 +"/" + me2 +".jpg"):
@@ -588,7 +587,7 @@ def saved():
         users.find_one_and_update({'email' : user_email} , {'$set' :  {'saved':favss}})
 
     for x in favss:
-        the_post = link_db.find_one({"post_id" :x})
+        the_post = post_db.find_one({"post_id" :x})
         de_render.append(the_post)
     if request.method == "POST":
         the_id = request.form['id']
@@ -611,7 +610,7 @@ def view_prof():
     the_user = users.find_one({"email" :user})
     mez = users.find_one({'email': user_email})
     folloin = mez['favs']
-    all_em_posts = link_db.find({'owner' : user})
+    all_em_posts = post_db.find({'owner' : user})
     cl = session['login_user']
     folloinx = users.find_one({'email' :cl})
     f = folloinx['favs']
@@ -679,7 +678,7 @@ def post_on_tags():
 @application.route('/view_link/' , methods = ['POST','GET'])
 @login_required
 def view_link():
-    link_db = mongo.db.links
+    post_db = mongo.db.links
     user = mongo.db.users
     user_email = session['login_user']
     the_user = users.find_one({"email" : user_email})
@@ -688,15 +687,15 @@ def view_link():
         the_id = request.form['id']
         words = request.form['comm']
         if request.form['sub'] == "Comment":
-                the_post = link_db.find_one({"post_id" : the_id})
+                the_post = post_db.find_one({"post_id" : the_id})
                 comments = the_post['comments']
                 commentz = {de_name : words}
                 comments.append(commentz)
-                link_db.find_one_and_update({"post_id" : the_id} ,{ '$set' :  {"comments": comments}} )
+                post_db.find_one_and_update({"post_id" : the_id} ,{ '$set' :  {"comments": comments}} )
   
         if request.form['sub'] == "View Profile": 
             the_id = request.form['id']
-            fou = link_db.find_one({"post_id" : the_id})
+            fou = post_db.find_one({"post_id" : the_id})
             the_id_owner = fou['owner']
             session["de_email"] = the_id_owner
             return redirect(url_for('view_prof' ))
@@ -712,25 +711,25 @@ def view_link():
                 
 
     link = session['linky']
-    link_db = mongo.db.links
+    post_db = mongo.db.links
     render_arr = []
-    all_posts = link_db.find()
-    post_in = link_db.find_one({"post_id" : link})
+    all_posts = post_db.find()
+    post_in = post_db.find_one({"post_id" : link})
     if post_in :
-        post_in_2 =  link_db.find_one({"post_id" : link})
+        post_in_2 =  post_db.find_one({"post_id" : link})
         post_tags = post_in_2['tags']
         for y in post_tags:
             indiv_tags  = y
             #relevant = trending_db.find({"tags" : tags})
             arr1 = []
-            all_posts= link_db.find({}).limit(500)
+            all_posts= post_db.find({}).limit(500)
             for x in all_posts:
                 tags = x['tags']
                 if indiv_tags in tags: 
                     arr1.append(x)        
         render_arr.extend(arr1)
         if len(render_arr) < 500:
-            random_psts = all_posts = link_db.find().limit(10)
+            random_psts = all_posts = post_db.find().limit(10)
             render_arr.extend(random_psts)   
             
     else:
@@ -776,33 +775,31 @@ def advert():
 @login_required
 def post(): 
     if request.method == "POST":
-        link_db = mongo.db.links
+        post_db = mongo.db.cleos
+          
+        cleo = request.form['cl'] 
         
-        title = request.form['title']
+        post_id = md5_crypt.hash(cleo)
         
-        desc = request.form['desc']
-        
-        link = request.form['link']
-
-        post_id = md5_crypt.hash(title)
-            
         tag1 = request.form['tag1']
         
         tag2 = request.form['tag2']
 
         tag_arr = []
         
-        
         tag_arr.append(tag1)
         tag_arr.append(tag2)
+        
         owner = session['login_user']
+        de_p = owner.replace(".", "")
+        pic = "/static/images/"+de_p+"/"+de_p+".jpg"
         wner_name = users.find_one({'email' : owner})
         owner_name = wner_name['username']
         like_arr = [owner]
         comments = []
-        link_db.insert_one({"owner" : owner , "link" : link ,  "likes" : like_arr , "comments" : comments ,
-                            "tags" : tag_arr , "title" : title , "description" : desc , "post_id" : post_id ,
-                            'owner_name' : owner_name})
+        post_db.insert_one({"owner" : owner , "likes" : like_arr , "comments" : comments , "cleo" : cleo,
+                            "tags" : tag_arr ,  "post_id" : post_id , 'owner_name' : owner_name , "img": pic})
+        
         return redirect(url_for('feed'))
     return render_template('post.html')
 
@@ -817,7 +814,7 @@ def my_post():
     this_guy = thiis_guy['username']
     
     
-    my_posts = link_db.find({"owner" : me})
+    my_posts = post_db.find({"owner" : me})
     tos = []
     for x in my_posts:
         tos.append(x)
@@ -840,7 +837,7 @@ def my_post():
             
         if request.form['sub'] == "Delete":
             id = request.form['the_id']
-            link_db.find_one_and_delete({"post_id" : id})
+            post_db.find_one_and_delete({"post_id" : id})
             return render_template('my_post.html' , posts = tos)
          
     return render_template('my_post.html' , posts = tos ,no = noz , dude = this_guy , ppic = nnn)
@@ -849,7 +846,7 @@ def my_post():
 @login_required
 def edit_post():
     da_id = session['post_edit']
-    the_post = link_db.find_one({"post_id" : da_id})
+    the_post = post_db.find_one({"post_id" : da_id})
     if request.method == "POST":
         de_link = request.form['link']
         de_ttle = request.form['title']
@@ -872,7 +869,7 @@ def edit_post():
             tags = de_tags
             tags = tags.split(",")
    
-            link_db.find_one_and_update({"post_id" : da_id } , { '$set' :  {"link" : link ,"title" : title , "description" : desc, "tags" : tags}})  
+            post_db.find_one_and_update({"post_id" : da_id } , { '$set' :  {"link" : link ,"title" : title , "description" : desc, "tags" : tags}})  
             return redirect(url_for('my_post'))
     
     return render_template('edit_post.html' , post = the_post)

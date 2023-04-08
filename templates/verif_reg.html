@@ -1,16 +1,51 @@
-{% extends "layout.html"%}
+<!DOCTYPE html>
+<html lang="en">
 
-{%block body%}
-Verify Your Email Please
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <script>
+        if ( window.history.replaceState ) {
+            window.history.replaceState( null, null, window.location.href );
+          }
+    </script>
+    <div class="site_name">
+        CLEO
+    </div>
+
+    <link href="{{ url_for('static', filename='/css/main.css') }}" rel="stylesheet">
+<body>
+        <div class="form_login" align="center">
+                <div class="contents">
+  <div class="login_name">                      
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    Verify Your Email Please
+  </div>
+
 
 {{m}}
 <form method="POST" action= "{{ url_for('complete_regist') }}"> 
     <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
    
     <br>
-    <input type="text" name = "code" placeholder="Verification Code" >
+    <input type="text" class="inputs" name = "code" placeholder="Verification Code" >
     <br>
-    <button type="submit" >Verify Email</button>
+    <br>
+    <button type="submit"  class="sub_btn       ">Verify Email</button>
 </form>
 
-{%endblock%}
+</div>
+</div>
+</div>
+</body>
+
+</html>

@@ -1,44 +1,55 @@
-{% extends "layout.html"%}
 
-{%block body%}
+<!DOCTYPE html>
+<html lang="en">
 
-<div name="fullform" align ="center">
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <script>
+        if ( window.history.replaceState ) {
+            window.history.replaceState( null, null, window.location.href );
+          }
+    </script>
+    <div class="site_name">
+        CLEO
+    </div>
+
+    <link href="{{ url_for('static', filename='/css/main.css') }}" rel="stylesheet">
+
+    <div class="form_login" align="center">
+        <div class="contents_create">
+<div class="login_name">                      <br>
+Create New Post
+<br>
+<br>
+</div>
+
 <form method="POST" action="{{ url_for('post') }}"  enctype="multipart/form-data" >
     <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
 
+<textarea class="inputs" type="text" name="cl" id="inbox" placeholder="Share your Thoughts" required="" rows=" 5" style="margin: 0px; width: 330px; height: 80px;"></textarea>
+
+    <br>
+    <input class="inputs" name="tag1" placeholder="Tag" type="text">
+    <br>
+    <br>
+    <input class="inputs" name="tag2" placeholder="Tag" type="text">
     <br>
     <br>
 
-<input name="title" id="title" placeholder="Link Title" type="text">
-    <br>
-    <br>
-
-<input name="link" id="link" placeholder="You Main Link" type ="url">
-    <br>
-    <br>
-<br>
-<textarea type="text" name="desc" id="inbox" placeholder="Problem Description" required="" rows=" 5" style="margin: 0px; width: 250px; height: 69px;"></textarea>
-
-    <br>
-
-
-            <legend>
-                Tags(Help Your Link Reach Relevant People)
-            </legend>
-<input name="tag1" id="tag1" placeholder="First Tag" type="text">
-            <br>
-            <br>
-
-<input name="tag2" id="tag2" placeholder="Second Tag" type="text">
-            <br>
-            <br>
-
-        </fieldset>
-        <br><br>
-
-<button type="submit">POST</button>
+<button class="sub_btn" type="submit">POST</button>
           <br>
           <br>
 </form>
+
 </div>
-{%endblock%}
+</div>
+
+</body>
+
+</html>

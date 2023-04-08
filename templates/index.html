@@ -1,45 +1,67 @@
-{% extends "layout.html"%}
 
-{%block body%}
+<!DOCTYPE html>
+<html lang="en">
 
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <script>
+        if ( window.history.replaceState ) {
+            window.history.replaceState( null, null, window.location.href );
+          }
+    </script>
+    <div class="site_name">
+        CLEO
+    </div>
+
+    <link href="{{ url_for('static', filename='/css/main.css') }}" rel="stylesheet">
+<body>
+        <div class="form_login" align="center">
+                <div class="contents">
+  <div class="login_name">                      <br>
 Log in Here
+  </div>
 
-
-<form method="POST" action=  "/">
-
+<form method="POST" action= "/">
+        <br><br>
         <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
 
         {{hcaptcha}}
 
-        <input name="email" placeholder="Email" type="email">
+        <input class="inputs" name="email" placeholder="Email" type="email">
 
 <br>
 <br>
 
-        <input name="passcode"  placeholder="Password" type="password">
+        <input class="inputs" name="passcode"  placeholder="Password" type="password">
 
         
         <br>
+        <br>
 
 
-        <button type="submit" class="btn btn-primary btn-block">Log In</button>
+        <button type="submit" class="sub_btn">Log In</button>
     
 </form>
-<br>
 
+<div class="reset_pass">
 
+        <button  class="sub_btn" >  <a href="{{ url_for('register') }}" > Sign Up</a> </button>
+        <br>
+        <br>
 
-<div>
-
-        
-        <a    href="{{ url_for('register') }}"><button>Sign Up </button> </a>  
- <br>
- <br>
         Forgot Password?
-        
         <br>
         <br>
-        <a    href="{{ url_for('reset_pass') }}"><button>Request New Password </button> </a>
+         <a href="{{ url_for('reset_pass') }}"> Request New Password</a>.
+</div>
     </div>
+</div>
+</body>
 
-{%endblock%}
+</html>

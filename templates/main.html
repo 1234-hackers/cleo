@@ -1,56 +1,80 @@
-{% extends "layout.html"%}
 
-{%block body%}
+<!DOCTYPE html>
+<html lang="en">
 
+<head>
 
-<h2>
-Posts Are Here
-<div align="center">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
     <script>
         if ( window.history.replaceState ) {
             window.history.replaceState( null, null, window.location.href );
           }
     </script>
 
-</h2>
+    <script>
+        function change_c(){
+            var de_btn = document.getElementById("name_like"):
+            de_btn.style.backgroundColor = "red";
+        }
+    </script>
+    <script src='https://kit.fontawesome.com/a076d05399.js' crossorigin='anonymous'></script>
+    <div class="site_name_g">
+        CLEO
+    </div>
+
+    <link href="{{ url_for('static', filename='/css/main.css') }}" rel="stylesheet">
+
+
+    <div class="main_menu" align="center">
+        <a href="{{ url_for('feed') }}"> Home</a>
+   
+           <a  href="{{ url_for('post') }}"> Create</a>
+           
+           <a href="{{ url_for('search') }}"> Search</a>
+   
+       
+       </div>
+
+<div class="items_cont" align="center">
 
 {% for x in arr%}
+<div class="one_item">
+<img class="prof" src = "{{x.img}}">
+<br>
+<p class="name" >{{ x.owner_name  }}</p>
+<br>
+<p class="name" > {{ x.cleo }}   </p>
+<br>
+<p class="name" > {{x.total_likes}}   </p>
 
-<img src = "{{x.ima}}">
-
-<h3> Owner </h3>{{ x.owner }}
-<br>
-<br>
-{{ x.description }}
-<br>
-<h2>
-    Link 
-</h2>
-{{ x.link }}
-<br>
-<br>
-{{x.total_likes}}
-<h2>
-  
     <form name="view" method="POST" action="{{ url_for('feed') }}">
         <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
-        <input type="hidden" name="id" value="{{x.post_id}}" valuex="view">  
-        <input type="submit" name="sub" value="View Link">
-        <input type="button" name="sub" value="Like">
-       
+        <input type="hidden" name="id" value="{{x.post_id}}" valuex="view">
+        <br>  
+        <label class="name_like" >
+            <button onclick="chenge_c()" name="sub" value="Like" > <i class='far fa-heart'></i></button>
+          </label>
+          <br>
+        <p class="name" > <input type="submit" class="sub_btn" name="sub" value="View Link"> </p>
+<br>
         
-    
+
         </form>
         
     <br>
     <br>
-<hr>
+</div>
+<br>
+<hr class="de_hr">
 {%endfor%}
 
- <br>
- <br>
-
-{{ email }}
 
 </div>
-{%endblock%}
+</body>
+
+</html>
