@@ -78,6 +78,8 @@ mongo = PyMongo(application)
 
 users = mongo.db.users
 verif = mongo.db.verify_email
+cleos = mongo.db.cleos
+post_db = mongo.db.cleos
 
 def login_required(f):
     @wraps(f)
@@ -447,13 +449,32 @@ def feed():
 @application.route('/search/' , methods = ['POST','GET'])
 @login_required
 def search():
+    
+    to_sh = []
     user_email = session['login_user']
+    trends = "i"
+    
+    top100 = post_db.find()
+    for pst in top100:
+        tgs = pst['tags']
+        for x in tgs:
+            if x == trends:
+                if not pst in to_sh:   
+                    to_sh.append(pst)
+                    
+        cl = pst['cleo']
+        finds = cl.split()
+        for x in finds: 
+            if x == trends:
+                if not pst in to_sh:   
+                    to_sh.append(pst)
+                    
     if request.method == "POST":
         de_search = request.form['search']
         session['q'] = de_search           
         return redirect(url_for('found_posts'))    
    
-    return render_template('search.html')
+    return render_template('search.html' , v = "v" ,  tp = to_sh , tx = top100)
 
 @application.route('/found_posts/' , methods = ['POST','GET'])
 @login_required
@@ -466,11 +487,7 @@ def found_posts():
         for c in al:
             emt = c['tags']
             if x in emt:
-                to_show.append(c)      
-            lks = c['link']
-            de_lin = lks.split()
-            if x in de_lin:
-                to_show.append(c) 
+                to_show.append(c)       
             if len(to_show) < 1:
                 no = "No Result Found,Please Check Your Spelling See More"
             else:

@@ -1,13 +1,58 @@
-{% extends "layout.html"%}
 
-{%block body%}
- 
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <script>
+        if ( window.history.replaceState ) {
+            window.history.replaceState( null, null, window.location.href );
+          }
+    </script>
+
+    <script>
+        function change_c(){
+            var de_btn = document.getElementById("name_like"):
+            de_btn.style.backgroundColor = "red";
+        }
+    </script>
+    <script src='https://kit.fontawesome.com/a076d05399.js' crossorigin='anonymous'></script>
+    <div class="site_name_g">
+        CLEO
+    </div>
+
+    <link href="{{ url_for('static', filename='/css/main.css') }}" rel="stylesheet">
+
+
+    <div class="main_menu" align="center">
+        <a href="{{ url_for('feed') }}"> Home</a>
+   
+           <a  href="{{ url_for('post') }}"> Create</a>
+           
+           <a href="{{ url_for('search') }}"> Search</a>
+   
+       
+       </div>
+
 <h2>
     <div align="center">
         <form name="search" method="POST" action="{{ url_for('search') }}">
             <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
-            <input type = "search"  name = "search" placeholder="Search">
+            <input type = "search"  class="inputs" name = "search" placeholder="Search">
              <input type="submit" name = "sub" value="Search">
             </form>
+{%for x in tx%}
+            {{x}}
+            {%endfor%}
+            {{v}}
+        
         </div>
-{%endblock%}
+    </body>
+
+    </html>
