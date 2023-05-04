@@ -42,57 +42,31 @@
 
 <div class="items_cont" align="center">
 
-{% for x in arr%}
-<div class="one_item">
-<img class="prof" src = "{{x.img}}">
-<br>
-<p class="name" >{{ x.owner_name  }}</p>
-<br>
-<p class="name" > {{ x.cleo }}   </p>
-<br>
-    <form name="view" method="POST" action="{{ url_for('feed') }}" onsubmit="funct()">
-        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
-        <input type="hidden" name="id" value="{{x.post_id}}" valuex="view">
-        <br>  
-        <label class="name_like" id="name_like" >
-            <button  type="submit" name="sub"  likesTotsl="{{x.total_likes}}" value="Like" >Like {{x.total_likes}} <i class='far fa-heart'></i></button>
-            <br>
-          <p class="name" > <input type="submit" class="sub_btn" name="sub" value="View Link"> </p>
-  <br>
-          </label>
-      
-     
 
-        </form>
-        <script type="text/javascript">
 
-        function sendData(){
+
+<script type="text/javascript">
+
+  function sendData(){
 data  = { 
-    name : "jphn"
-    age : 30
+name : "john"
 };
 let xhr = newXMLHttpRequest();
-xhr.open("POST" , "/feed" , true);
+xhr.open("POST" , "/new_main" , true);
 xhr.setRequestHeader("Content-Type" , "application/json;charset=UTF-8");
-xhr.send(json.stringify(data));
+xhr.send(JSON.stringify(data));
 
 //update the counter
 let like_button = document.getElementById('like');
 let likeCount = parseInt(like_button.innerHtml);
 like_button.innerHtml = likeCount + 1;
 
-
-        }
-       
-    </script>
-    <button likeCount ="{{x.total_likes}}"  id="like" onclick="sendData()">Like {{x.total_likes}}</button>
-    <br>
-    <br>
-</div>
+  }
+ 
+</script>
+<button likeCount = 5   id="like" onclick="sendData()">Like 5 </button>
 <br>
-<hr class="de_hr">
-{%endfor%}
-
+{{name}}
 
 </div>
 </body>

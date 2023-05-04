@@ -421,16 +421,24 @@ def feed():
         
     #view link functionality
     if request.method == "POST":
+        dt = request.get_json()
+        name = data["name"]
+        age = data["age"]
+        #view the link here
         the_id = request.form['id']
         if request.form['sub'] == "View Link": 
             session["linky"] = the_id
             return redirect(url_for('view_link' ))
-                
+            
+        
+        #like the post
         if request.form['sub'] == "Like":
             the_post = post_db.find_one({"post_id" : the_id})
             likes= the_post['likes']
             total_likes = len(likes)
             clicker = session['login_user']
+            
+            
             if clicker in likes:
                 likes.remove(clicker)
                 total_likes = len(likes)
@@ -891,7 +899,23 @@ def edit_post():
     
     return render_template('edit_post.html' , post = the_post)
     
-    
+
+
+@application.route('/new_main/' , methods = ['POST' , 'GET'])
+def new_main():
+    if request.method == "POST":
+        dt = request.get_json()
+        name = dt["name"]
+        age = dt["age"]
+        
+        if name  == "john":
+            return render_template("newmain.html" , name = name) 
+
+    return render_template("newmain.html")
+
+
+
+
     
 if __name__ == "__main__":
     application.secret_key = "Fuckoffmen"

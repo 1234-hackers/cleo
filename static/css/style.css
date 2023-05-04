@@ -1,0 +1,50 @@
+
+:root{
+
+--box-sizing: border-box;
+--margin: 0;
+--padding: 0;
+}
+
+    
+    body {
+    font-family: Arial, sans-serif;
+    font-size: 16px;
+    line-height: 1.4;
+    color: #333;
+    }
+    
+    /* Site name */
+    .site_name {
+    text-align: center;
+    padding: 20px;
+    font-size: 24px;
+    font-weight: bold;
+    }
+    
+    /* Main menu */
+    .main_menu {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    padding: 10px;
+    background-color: #eee;
+    border-bottom: 1px solid #ccc;
+    }
+    
+    .main_menu a {
+    text-decoration: none;
+    color: #333;
+    font-weight: bold;
+    transition: all 0.2s ease-in-out;
+    }
+    
+    .main_menu a:hover {
+    color: #f00;
+    }
+    
+    /* Item container */
+    .items_cont {
+    padding: 10px;
+    }
+    
