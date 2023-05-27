@@ -1,0 +1,69 @@
+<div id="paypal-button-container"></div>
+ 
+<script src="https://www.paypal.com/sdk/js?client-id=sb&commit=false"></script>
+ 
+<script>
+ 
+paypal.Buttons({
+ 
+    env: 'sandbox', /* sandbox | production */
+    style: {
+                layout: 'horizontal',   // horizontal | vertical 
+                size:   'responsive',   /* medium | large | responsive*/
+                shape:  'pill',         /* pill | rect*/
+                color:  'gold',         /* gold | blue | silver | black*/
+                fundingicons: false,    /* true | false */
+                tagline: false          /* true | false */
+            }, 
+ 
+      /* createOrder() is called when the button is clicked */
+ 
+    createOrder: function() {
+ 
+ 
+        /* Set up a url on your server to create the order */
+ 
+        var CREATE_URL = '/example/createOrder';
+ 
+ 
+        /* Make a call to your server to set up the payment */
+ 
+        return fetch(CREATE_URL)
+         .then(function(res) {
+          return res.json();
+         }).then(function(data) {
+          return data.orderID;
+         });
+ 
+    },
+ 
+ 
+ 
+ 
+    /* onApprove() is called when the buyer approves the payment */
+ 
+    onApprove: function(data, actions) {
+ 
+        /* Set up a url on your server to execute the payment */
+ 
+        var EXECUTE_URL = '/example/executePayment';
+ 
+        /* Set up the data you need to pass to your server */
+ 
+        /* Make a call to your server to execute the payment */
+ 
+        return fetch('/my-server/capture-paypal-transaction', {
+         body: JSON.stringify({
+          orderID: data.orderID
+         })
+        }).then(function(res) {
+         return res.json();
+        }).then(function(details) {
+         alert('Transaction funds captured from ' + details.payer_given_name);
+        });
+ 
+    }
+ 
+}).render('#paypal-button-container');
+ 
+</script>

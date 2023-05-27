@@ -63,23 +63,6 @@ application.config['MONGO_URI'] = 'mongodb://localhost:27017/users'
 mongo = PyMongo(application)
 
 
-#email configs
-application.config['MAIL_SERVER'] = "smtp.gmail.com"
-application.config['TESTING'] = True
-application.config['MAIL_PORT'] = 465
-application.config['MAIL_USE_TLS'] = False
-application.config['MAIL_USE_SSL'] = True
-application.config['MAIL_DEBUG'] = True
-application.config['MAIL_USERNAME']  = "jacksonmuta123@gmail.com"
-application.config['MAIL_PASSWORD'] =  "aqlxhzaziujnllzi"
-application.config['MAIL_DEFAULT_SENDER'] = "Service@LinksCustomerCare "
-application.config['MAIL_SUpplicationRESS_SEND'] = False
-application.config['MAX_EMAIL'] = None
-application.config['MAIL_ASCII_ATTATCHMENTS'] = False
-service_mail = application.config['MAIL_USERNAME']
-
-Post_guy = Mail(application)
-
 application.permanent_session_lifetime = timedelta(days=30)
 
 Hash_passcode = CryptContext(schemes=["sha256_crypt" ,"argon2" , "bcrypt_sha256"],sha256_crypt__min_rounds=131072)
@@ -88,6 +71,7 @@ mongo = PyMongo(application)
 
 users = mongo.db.users
 link_db = mongo.db.links
+
 
 def login_required(f):
     @wraps(f)
