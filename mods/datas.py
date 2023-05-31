@@ -68,10 +68,9 @@ agric_green = [
 "Food Security",
 "water",
 "Global Warming"
-
 ]
 
-rel_life_style = [
+rel = [
 "LIFESTYLE AND RELATIONS",
 "Fashion",
 "Shoes",

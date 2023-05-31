@@ -1,7 +1,7 @@
 '''
     This files contains any functions used in the API
 '''
-
+from functools import wraps
 #login required decorator
 def login_required(f):
     @wraps(f)
@@ -36,7 +36,6 @@ def sendGmail(sender,recipients,mess):
     app.config['MAIL_USE_TLS'] = True
     app.config['MAIL_USE_SSL'] = False
     mail = Mail(app)
-
     msg = Message('Hello from the other side!', sender =   sender, recipients = recipients)
     msg.body = mess
     mail.send(msg)
